@@ -1,0 +1,279 @@
+head	1.1;
+access;
+symbols;
+locks
+	user:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2023.08.09.19.37.04;	author user;	state Exp;
+branches;
+next	;
+
+
+desc
+@Diffs from original distro in ~/Download/CommandStation-EX
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@CONTRIBUTING.md::
+CommandDistributor.cpp::
+CommandDistributor.h::
+CommandStation-EX.ino::
+DCC.cpp::
+25a26,28
+> // DRL: Begin
+> #include "DRLDefines.h"
+> // DRL: End
+39a43,49
+> // DRL: Begin
+> #if defined(INSERT_IDLE)
+> #pragma message "Added inserting IDLE messages"
+> uint8_t insert_count = 0;
+> uint8_t insert_count_max = 9;
+> #endif
+> // DRL: End
+121a132,141
+> // DRL: Begin
+> #if defined(INSERT_IDLE)
+>   // DRL: Added
+>   insert_count = (insert_count+1)%insert_count_max;
+>   if (!insert_count) {
+>      DCCWaveform::mainTrack.schedulePacket(idlePacket, 2, 0); // DRL: Added!!!!
+>      // DIAG(F("setThrottle2 inserted IDLE: %x:%x:%x"),idlePacket[0], idlePacket[1], idlePacket[3]);
+>   }
+> #endif
+> // DRL: End
+135a156,165
+> // DRL: Begin
+> #if defined(INSERT_IDLE)
+>   // DRL: Added
+>   insert_count = (insert_count+1)%insert_count_max;
+>   if (!insert_count) {
+>      DCCWaveform::mainTrack.schedulePacket(idlePacket, 2, 0); // DRL: Added!!!!
+>      // DIAG(F("setThrottle2 inserted IDLE: %x:%x:%x"),idlePacket[0], idlePacket[1], idlePacket[3]);
+>   }
+> #endif
+> // DRL: End
+184a215,224
+> // DRL: Begin
+> #if defined(INSERT_IDLE)
+>   // DRL: Added
+>   insert_count = (insert_count+1)%insert_count_max;
+>   if (!insert_count) {
+>      DCCWaveform::mainTrack.schedulePacket(idlePacket, 2, 0); // DRL: Added!!!!
+>      // DIAG(F("setThrottle2 inserted IDLE: %x:%x:%x"),idlePacket[0], idlePacket[1], idlePacket[3]);
+>   }
+> #endif
+> // DRL: End
+DCC.h::
+DCCACK.cpp::
+23a24,26
+> // DRL: Begin
+> #include "DRLDefines.h"
+> // DRL: End
+82a86,87
+> // DRL: Begin
+> #if ! defined(FAKE_ACK)
+87a93,94
+> #endif
+> // DRL: End
+147a155,167
+> // DRL: Begin
+> #if defined(FAKE_ACK)
+>       // Fake valid ack
+> #pragma message "Adding fake valid ack code"
+>       ackDetected=true;
+>       ackPending=false;
+>       DCCWaveform::progTrack.clearRepeats();  // shortcut remaining repeat packets 
+>       ackMaxCurrent=0;
+>       ackPulseDuration=0;
+>       numAckSamples=0;
+>       numAckGaps=0;
+> #endif
+> // DRL: End
+DCCACK.h::
+DCCEX.h::
+DCCEXParser.cpp::
+DCCEXParser.h::
+DCCRMT.cpp::
+DCCRMT.h::
+DCCTimer.h::
+DCCTimerAVR.cpp::
+DCCTimerESP.cpp::
+DCCTimerMEGAAVR.cpp::
+DCCTimerSAMD.cpp::
+DCCTimerSTM32.cpp::
+DCCTimerTEENSY.cpp::
+DCCWaveform.cpp::
+25a26,28
+> // DRL: Begin
+> #include "DRLDefines.h"
+> // DRL: End
+41a45,46
+> // DRL:Begin
+> #if ! defined(ADD_IDLE_PACKET)
+42a48,49
+> #endif
+> // DRL:End
+DCCWaveform.h::
+23a24,26
+> // DRL: Begin
+> #include "DRLDefines.h"
+> // DRL: End
+38a42,46
+> // DRL: Begin
+> #if defined(ADD_IDLE_PACKET)
+> const byte idlePacket[] = {0xFF, 0x00, 0xFF};
+> #endif
+> // DRL: End
+DIAG.h::
+DRLdefines.h::
+Display.cpp::
+Display.h::
+DisplayInterface.cpp::
+DisplayInterface.h::
+Display_Implementation.h::
+EEStore.cpp::
+EEStore.h::
+EX-CommandStation-installer.exe::
+EXRAIL.h::
+EXRAIL2.cpp::
+EXRAIL2.h::
+EXRAIL2MacroReset.h::
+EXRAILMacros.h::
+EthernetInterface.cpp::
+EthernetInterface.h::
+FSH.h::
+GITHUB_SHA.h::
+I2CManager.cpp::
+I2CManager.h::
+I2CManager_AVR.h::
+I2CManager_Mega4809.h::
+I2CManager_NonBlocking.h::
+I2CManager_SAMD.h::
+I2CManager_STM32.h::
+I2CManager_Wire.h::
+IODevice.cpp::
+IODevice.h::
+IO_AnalogueInputs.h::
+IO_DCCAccessory.cpp::
+IO_DFPlayer.h::
+IO_EXFastclock.h::
+IO_EXIOExpander.h::
+IO_EXTurntable.h::
+IO_ExampleSerial.h::
+IO_GPIOBase.h::
+IO_HALDisplay.h::
+IO_HCSR04.h::
+IO_MCP23008.h::
+IO_MCP23017.h::
+IO_PCA9555.h::
+IO_PCA9685.cpp::
+IO_PCA9685pwm.h::
+IO_PCF8574.h::
+IO_PCF8575.h::
+IO_RotaryEncoder.h::
+IO_Servo.cpp::
+IO_Servo.h::
+IO_TouchKeypad.h::
+IO_VL53L0X.h::
+IO_duinoNodes.h::
+LCN.cpp::
+LCN.h::
+LICENSE::
+LiquidCrystal_I2C.cpp::
+LiquidCrystal_I2C.h::
+MotorDriver.cpp::
+MotorDriver.h::
+MotorDrivers.h::
+Outputs.cpp::
+Outputs.h::
+README.md::
+Release - Architecture Doc::
+Release_Notes::
+Only in /Users/user/Downloads/CommandStation-EX/Release_Notes: release_notes_v4.1.1.md
+Only in /Users/user/Downloads/CommandStation-EX/Release_Notes: release_notes_v4.1.2.md
+RingStream.cpp::
+RingStream.h::
+SSD1306Ascii.cpp::
+SSD1306Ascii.h::
+Sensors.cpp::
+Sensors.h::
+SerialManager.cpp::
+SerialManager.h::
+StringBuffer.cpp::
+StringBuffer.h::
+StringFormatter.cpp::
+StringFormatter.h::
+TrackManager.cpp::
+TrackManager.h::
+Turnouts.cpp::
+Turnouts.h::
+WiThrottle.cpp::
+WiThrottle.h::
+WifiESP32.cpp::
+22a23,25
+> // DRL: Begin
+> #include "DRLdefines.h"
+> // DRL: End
+213a217,224
+> // DRL: Begin
+> #if defined(ADD_MSGS_EPS32)
+>       LCD(4,F("ADDR=%s"),WiFi.softAPIP().toString().c_str());  // ADDR
+>       LCD(5,F("PORT=%d"),port);  // PORT
+>       LCD(6,F("SSID=%s"),strSSID.c_str());  // SSID
+>       LCD(7,F("PASS=%s"),strPass.c_str());  // PASS
+> #endif
+> // DRL: End
+WifiESP32.h::
+WifiInboundHandler.cpp::
+WifiInboundHandler.h::
+WifiInterface.cpp::
+22a23,25
+> // DRL: Begin
+> #include "DRLDefines.h"
+> // DRL: End
+350c353,357
+<     LCD(4,F("%s"),ipString);  // There is not enough room on some LCDs to put a title to this      
+---
+> // DRL: Begin
+> #if defined(ADD_MSGS)
+>     LCD(4,F("ADDR=%s"),ipString);  // There is not enough room on some LCDs to put a title to this      
+> #endif
+> // DRL: End
+353a361,362
+> // DRL: Begin
+> #if defined(ADD_MSGS)
+354a364,368
+>   char macTail[]={macAddress[9],macAddress[10],macAddress[12],macAddress[13],macAddress[15],macAddress[16],'\0'};
+>   LCD(6,F("SSID=DCCEX_%s"),(const char *)macTail);
+>   LCD(7,F("PASSWD=PASS_%s"),(const char *)macTail);
+> #endif
+> // DRL: End
+WifiInterface.h::
+config.example.h::
+config.h::
+defines.h::
+foo.diff::
+install_via_powershell.cmd::
+installer.json::
+installer.ps1::
+installer.sh::
+myAutomation.example.h::
+myEX-Turntable.example.h::
+myHal.cpp.txt::
+myHal.cpp_example.txt::
+mySetup.h::
+objdump.bat::
+objdump.sh::
+platformio.ini::
+release_notes.md::
+version.h::
+@
