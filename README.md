@@ -3,7 +3,7 @@
 This is a local repository of DCC-EX.com's EX-CommandStation with modifications to accommodate connection to
 the ProMiniAir Transmitter. These modifications include: 
 * Adding more DCC idle messages to satisfy the CVP Airwire900 CONVRTR and G-3/4 wireless receivers
-* Facking Service Mode ACKs to allow the ProMiniAir to send Service Mode commands without decoder acknowledgment
+* Faking Service Mode ACKs to allow the ProMiniAir to send Service Mode commands without decoder acknowledgment
 * Startup commands to activate the very nice "JOIN" capability to ensure Service Mode and normal DCC commands can be sent
   to the ProMiniAir Transmitter
 * Added a ProMiniAir "motor" driver so that 5V DCC logic can be sent to the ProMiniAir Transmitter
