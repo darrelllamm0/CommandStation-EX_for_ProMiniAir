@@ -25,6 +25,31 @@
  */
 // DRL: Begin
 #include "DRLDefines.h"
+
+#if defined(INSERT_NMRADCC)
+#pragma message "Inserting external DCC messages"
+#include <NmraDcc.h>
+volatile DCC_MSG msg[MSG_MAX] = {
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+  { 3, 20, { 0xFF, 0, 0xFF, 0, 0, 0}},
+};
+volatile uint8_t msg_received = MSG_MAX-1;
+volatile uint8_t msg_sent = MSG_MAX-1;
+#endif
 // DRL: End
 #include "DIAG.h"
 #include "DCC.h"
@@ -69,6 +94,28 @@ const byte FN_GROUP_5=0x10;
 
 FSH* DCC::shieldName=NULL;
 byte DCC::globalSpeedsteps=128;
+
+// DRL: Begin
+#if defined(INSERT_NMRADCC)
+#if defined(DEBUG)
+void printMsgSerial(volatile uint8_t msg_num) {
+  Serial.print("msg[");
+  Serial.print(msg_num, HEX);
+  Serial.print("]:\n");
+  Serial.print(" Size: ");
+  Serial.print(msg[msg_num].Size, HEX);
+  Serial.print("\n");
+  for (uint8_t i = 0; i < msg[msg_num].Size; i++) {
+     Serial.print(" Data[");
+     Serial.print(i, HEX);
+     Serial.print("]: ");
+     Serial.print(msg[msg_num].Data[i], HEX);
+     Serial.print("\n");
+  }
+}
+#endif
+#endif
+// DRL: End
 
 void DCC::begin() {
   StringFormatter::send(&USB_SERIAL,F("<iDCC-EX V-%S / %S / %S G-%S>\n"), F(VERSION), F(ARDUINO_TYPE), shieldName, F(GITHUB_SHA));
@@ -135,7 +182,7 @@ void DCC::setThrottle2( uint16_t cab, byte speedCode)  {
   insert_count = (insert_count+1)%insert_count_max;
   if (!insert_count) {
      DCCWaveform::mainTrack.schedulePacket(idlePacket, 2, 0); // DRL: Added!!!!
-     // DIAG(F("setThrottle2 inserted IDLE: %x:%x:%x"),idlePacket[0], idlePacket[1], idlePacket[3]);
+     // DIAG(F("setThrottle2: inserted IDLE: %x:%x:%x"),idlePacket[0], idlePacket[1], idlePacket[3]);
   }
 #endif
 // DRL: End
@@ -159,7 +206,7 @@ void DCC::setFunctionInternal(int cab, byte byte1, byte byte2) {
   insert_count = (insert_count+1)%insert_count_max;
   if (!insert_count) {
      DCCWaveform::mainTrack.schedulePacket(idlePacket, 2, 0); // DRL: Added!!!!
-     // DIAG(F("setThrottle2 inserted IDLE: %x:%x:%x"),idlePacket[0], idlePacket[1], idlePacket[3]);
+     // DIAG(F("setFunctionInternal: inserted IDLE: %x:%x:%x"),idlePacket[0], idlePacket[1], idlePacket[3]);
   }
 #endif
 // DRL: End
@@ -769,3 +816,18 @@ void DCC::displayCabList(Print * stream) {
      StringFormatter::send(stream,F("Used=%d, max=%d\n"),used,MAX_LOCOS);
 
 }
+
+// DRL: Begin
+#if defined(INSERT_NMRADCC)
+extern void notifyDccMsg(DCC_MSG *Msg) {
+  if ((3 <= Msg->Size) && (Msg->Size <= 6)) {  // Check for a valid message
+     msg_received = (msg_received+1) % MSG_MAX;
+     memcpy((void *)&msg[msg_received], (void *)Msg, sizeof(DCC_MSG));
+     DCCWaveform::mainTrack.schedulePacket((byte *)&msg[msg_received].Data[0], msg[msg_received].Size-1, 0); // Note the "-1"!
+#if defined(DEBUG)
+     printMsgSerial(msg_received);
+#endif
+  }
+}  // End of notifyDccMsg
+#endif
+// DRL: End

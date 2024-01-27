@@ -3,7 +3,15 @@
 
 #include "StringFormatter.h"
 
-#define VERSION "5.0.0"
+#define VERSION "5.0.8"
+// 5.0.8  - Added ProMiniAir intefaces
+// 5.0.7  - Only flag 2.2.0.0-dev as broken, not 2.2.0.0
+// 5.0.6  - Bugfix lost TURNOUTL description
+// 5.0.5  - Bugfix version detection logic and better message
+// 5.0.4  - Bugfix: <JR> misses default roster. 
+// 5.0.3  - Check bad AT firmware version
+// 5.0.2  - Bugfix: ESP32 30ms off time
+// 5.0.1  - Bugfix: execute 30ms off time before rejoin
 // 5.0.0  - Make 4.2.69 the 5.0.0 release
 // 4.2.69 - Bugfix: Make <!> work in DC mode
 // 4.2.68 - Rename track mode OFF to NONE

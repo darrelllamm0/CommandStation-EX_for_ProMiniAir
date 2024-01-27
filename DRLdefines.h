@@ -2,7 +2,7 @@
 #ifndef DRL_DEFINES_H
 #define DRL_DEFINES_H
 
-#define INSERT_IDLE
+#undef INSERT_IDLE
 #define FAKE_ACK
 
 #undef RESET_PREAMBLE_COUNT
@@ -15,6 +15,13 @@
 #define ADD_OLED
 
 #define ADD_JOIN
+#define INSERT_NMRADCC
+
+#if defined(INSERT_NMRADCC)
+#define MSG_MAX 16
+#endif
+
+#undef DEBUG
 
 #endif
 // DRL: End

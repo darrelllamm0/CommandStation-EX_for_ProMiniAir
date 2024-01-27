@@ -371,7 +371,7 @@ void DCCACK::callback(int value) {
 
     switch (callbackState) {
       case AFTER_READ:
-         if (ackManagerRejoin && autoPowerOff) {
+         if (ackManagerRejoin && !autoPowerOff) {
                 progDriver->setPower(POWERMODE::OFF);
                 callbackStart=millis();
                 callbackState=WAITING_30;

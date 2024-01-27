@@ -21,11 +21,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with CommandStation.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef ARDUINO_ARCH_ESP32
-  // This code is replaced entirely on an ESP32
 // DRL: Begin
+#undef DEBUG
 #include "DRLDefines.h"
 // DRL: End
+
+#ifndef ARDUINO_ARCH_ESP32
+  // This code is replaced entirely on an ESP32
 #include <Arduino.h>
 
 #include "DCCWaveform.h"
@@ -287,4 +289,6 @@ bool DCCWaveform::getPacketPending() {
 void IRAM_ATTR DCCWaveform::loop() {
   DCCACK::checkAck(progTrack.getResets());
 }
+
 #endif
+
