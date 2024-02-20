@@ -66,6 +66,15 @@
 #warning You have myAutomation.h but your hardware has not enough memory to do that, so EX-RAIL DISABLED
 #endif
 
+// DRL: Begin
+#if defined(INSERT_NMRADCC)
+#include <NmraDcc.h>
+#define DCC_PIN    23
+NmraDcc Dcc;
+#endif
+// DRL: End
+
+
 void setup()
 {
   // The main sketch has responsibilities during setup()
@@ -128,10 +137,26 @@ void setup()
   #endif
   LCD(3, F("Ready"));
   CommandDistributor::broadcastPower();
+
+// DRL: Begin
+#if defined(INSERT_NMRADCC)
+  Dcc.pin(DCC_PIN, 1);
+  // Call the main DCC Init function to enable the DCC Receiver
+  Dcc.init(MAN_ID_DIY, 100,   FLAGS_DCC_ACCESSORY_DECODER, 0);
+#endif
+// DRL: End
+
+
 }
 
 void loop()
 {
+// DRL: Begin
+#if defined(INSERT_NMRADCC)
+  Dcc.process();  // The DCC library does it all with the callback notifyDccMsg!
+#endif
+// DRL: End
+
   // The main sketch has responsibilities during loop()
 
   // Responsibility 1: Handle DCC background processes
